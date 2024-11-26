@@ -9,6 +9,19 @@ from selenium.webdriver.support import expected_conditions as EC
 import csv 
 import time 
 
+#fiz essa função para o arquivo csv ficar na mesma pasta em que o terminal estiver
+def get_script_directory():
+    #pegar a pasta em que esta o script atual
+    if getattr(sys, 'frozen', False):
+        #olha se é um executável compilado
+        return os.path.dirname(sys.executable)
+    elif __file__:
+        #verifica se é um script python
+        return os.path.dirname(os.path.abspath(__file__))
+    
+    #volta para o diretório atual
+    return os.getcwd()
+
 def setup_driver():
     options = webdriver.ChromeOptions()  
     options.add_argument('--headless')  
@@ -45,6 +58,12 @@ def scrape_quotes(driver):
     return quotes_data
 
 def save_to_csv(quotes_data, filename='quotes.csv'):
+
+    #pega o diretório do script
+    script_dir = get_script_directory()
+    
+    #path para salvar o arquivo
+    full_path = os.path.join(script_dir, filename)
     
     #define a ordem das colunas
     keys = quotes_data[0].keys()
