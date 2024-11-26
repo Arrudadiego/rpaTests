@@ -65,7 +65,7 @@ def email_report(summary, csv_path):
     email_password = os.getenv('EMAIL_PASS')
     
     #emails dos destinatários
-    email_receivers = [
+    destinatarios = [
         'paulo.andre@parvi.com.br', 
         'thiago.jose@parvi.com.br'
     ]
@@ -84,7 +84,7 @@ def email_report(summary, csv_path):
             server.login(email_sender, email_password)
             
             #envio do email
-            for receiver in email_receivers:
+            for receiver in destinatarios:
                 #criacao do email
                 message = MIMEMultipart()
                 message['From'] = email_sender
