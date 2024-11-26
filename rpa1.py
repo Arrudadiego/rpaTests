@@ -9,11 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 import csv 
 import time 
 
-#fiz essa função para o arquivo csv ficar na mesma pasta em que o terminal estiver
+#fiz essa funcao para o arquivo csv ficar na mesma pasta em que o terminal estiver
 def get_script_directory():
     #pegar a pasta em que esta o script atual
     if getattr(sys, 'frozen', False):
-        #olha se é um executável compilado
+        #olha se é um executavel compilado
         return os.path.dirname(sys.executable)
     elif __file__:
         #verifica se é um script python
@@ -32,7 +32,7 @@ def scrape_quotes(driver):
     #lista que ira armazenar os dados
     list = [] 
     
-    #wait para carregar as citações
+    #wait para carregar as citacoes
     citacoes = WebDriverWait(driver, 10).until(
         EC.presence_of_all_elements_located((By.CLASS_NAME, 'quote'))
     )
@@ -59,7 +59,7 @@ def scrape_quotes(driver):
 
 def save_to_csv(list, filename='quotes.csv'):
 
-    #pega o diretório do script
+    #pega o diretorio do script
     diretorio = get_script_directory()
     
     #path para salvar o arquivo
@@ -93,6 +93,6 @@ def main():
         #encerra o driver
         driver.quit()
 
-#chamada da função main
+#chamada da funcao main
 if __name__ == '__main__':
     main()

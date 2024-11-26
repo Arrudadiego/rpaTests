@@ -11,7 +11,7 @@ def get_script_directory():
 
 def analyze_quotes(csv_file='quotes.csv'):
 
-    #diretório do script
+    #diretorio do script
     diretorio = get_script_directory()
     
     #path para o arquivo csv
@@ -45,7 +45,7 @@ def analyze_quotes(csv_file='quotes.csv'):
         print(f"\nTag mais utilizada: '{most_tag}'")
         print(f"Número de ocorrências: {tag_count}")
         
-        #relatorio da análise
+        #relatorio da analise
         report_path = os.path.join(diretorio, 'analiseQuotesCsv.txt')
         with open(report_path, 'w', encoding='utf-8') as f:
             f.write("Relatório de Análise de Citações \n\n")
