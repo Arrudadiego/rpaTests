@@ -30,50 +30,50 @@ def setup_driver():
 
 def scrape_quotes(driver):
     #lista que ira armazenar os dados
-    quotes_data = [] 
+    list = [] 
     
     #wait para carregar as citações
-    quote_elements = WebDriverWait(driver, 10).until(
+    citacoes = WebDriverWait(driver, 10).until(
         EC.presence_of_all_elements_located((By.CLASS_NAME, 'quote'))
     )
     
-    for quote_element in quote_elements:
+    for quote_element in citacoes:
         #encontra e extrai o texto
-        quote_text = quote_element.find_element(By.CLASS_NAME, 'text').text
+        texto = quote_element.find_element(By.CLASS_NAME, 'text').text
         
         #encontra e extrai o autor
-        author = quote_element.find_element(By.CLASS_NAME, 'author').text
+        autor = quote_element.find_element(By.CLASS_NAME, 'author').text
         
         #encontra e extrai as tags
         tags_elements = quote_element.find_elements(By.CLASS_NAME, 'tag')
         tags = [tag.text for tag in tags_elements]  # Converte tags para lista
         
         #adiçao na lista
-        quotes_data.append({
-            'Quote': quote_text,
-            'Author': author,
+        list.append({
+            'Quote': texto,
+            'Author': autor,
             'Tags': ', '.join(tags)
         })
     
-    return quotes_data
+    return list
 
-def save_to_csv(quotes_data, filename='quotes.csv'):
+def save_to_csv(list, filename='quotes.csv'):
 
     #pega o diretório do script
-    script_dir = get_script_directory()
+    diretorio = get_script_directory()
     
     #path para salvar o arquivo
-    full_path = os.path.join(script_dir, filename)
+    path = os.path.join(diretorio, filename)
     
     #define a ordem das colunas
-    keys = quotes_data[0].keys()
+    keys = list[0].keys()
     
     #abre o arquivo csv
     with open(filename, 'w', newline='', encoding='utf-8-sig') as csvfile:
         #escritor csv
         writer = csv.DictWriter(csvfile, fieldnames=keys)       
         writer.writeheader()
-        writer.writerows(quotes_data)
+        writer.writerows(list)
 
 def main():
     #driver do navegador
@@ -83,11 +83,11 @@ def main():
         #ida ao site
         driver.get('https://quotes.toscrape.com/js-delayed/')
         time.sleep(5)
-        quotes_data = scrape_quotes(driver)        
-        save_to_csv(quotes_data)
+        list = scrape_quotes(driver)        
+        save_to_csv(list)
         
         #print em caso de sucesso
-        print(f"Foram extraidas com sucesso {len(quotes_data)} citações")
+        print(f"Foram extraidas com sucesso {len(list)} citações")
     
     finally:
         #encerra o driver
