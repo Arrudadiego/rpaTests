@@ -1,2 +1,2 @@
 # rpaTests
-Treino e teste para uma empresa
+Treinamento em selenium e pandas com python
