@@ -23,7 +23,8 @@ def email_report(summary, csv_path):
     
     #emails dos destinatários
     destinatarios = [
-        'arrudadiego2000@hotmail.com'
+        'paulo.andre@parvi.com.br', 
+        'thiago.jose@parvi.com.br'
     ]
     
     #configs do servidor SMTP do gmail
