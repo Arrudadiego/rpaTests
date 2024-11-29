@@ -56,8 +56,10 @@ rpa3.py
 
 1. Execute o script `rpa1.py` para realizar o web scraping:
    - `python rpa1.py`
-2. Execute o script `rpa2.py` para processar os dados e enviar o relatório por e-mail:
+2. Execute o script `rpa2.py` para processar os dados:
    - `python rpa2.py`
+3. Execute o script `rpa3.py` para enviar as analises por email:
+   - `python rpa3.py`
 
 ## Considerações Finais
 
