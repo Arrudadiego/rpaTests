@@ -1,35 +1,36 @@
 # RPA Python Challenge
 
-Este projeto é uma solução para o desafio de Automação de Processos com Python (RPA), que tem como objetivo extrair e analisar dados de citações de um site web.
+Este projeto é uma solução para o desafio de Automação de Processos com Python (RPA), que tem como objetivo extrair e analisar dados de citações de um site web, além de enviar os resultados por e-mail.
 
-## Descrição
+## 🚀 Funcionalidades
 
-O projeto consiste em três partes principais:
+1. **Web Scraping com Selenium**:
+   - Automação do processo de extração de citações, autores e tags do site [quotes.toscrape.com](https://quotes.toscrape.com/js-delayed/).
 
-1. **Web Scraping com Selenium**: Automação do processo de extração de citações, autores e tags desse [site](https://quotes.toscrape.com/js-delayed/).
-2. **Processamento de Dados com Pandas**: Análise dos dados extraídos, incluindo a identificação do autor mais recorrente e da tag mais utilizada.
-3. **Envio de Relatório por E-mail**: Envio do arquivo CSV contendo os dados extraídos, juntamente com o relatório de análise, para os e-mails especificados.
+2. **Processamento de Dados com Pandas**:
+   - Análise dos dados extraídos, incluindo:
+     - Total de citações.
+     - Autor mais recorrente.
+     - Tag mais utilizada.
 
-## Estrutura do Projeto
+3. **Envio de Relatório por E-mail**:
+   - Envio do arquivo CSV com os dados extraídos e o relatório gerado para os e-mails especificados.
 
-O projeto possui a seguinte estrutura de arquivos:
+---
+
+## 📂 Estrutura do Projeto
+
+```plaintext
 rpaTests/
-.env
-.env.example
-.gitignore
-README.md
-requirements.txt
-rpa1.py
-rpa2.py
-rpa3.py
-- `.env`: Arquivo com as credenciais de e-mail (não compartilhado).
-- `.env.example`: Arquivo de exemplo com a estrutura das variáveis de ambiente.
-- `.gitignore`: Arquivo que define quais arquivos devem ser ignorados pelo Git.
-- `README.md`: Este arquivo, com informações sobre o projeto.
-- `requirements.txt`: Arquivo com as dependências do projeto.
-- `rpa1.py`: Script responsável pelo web scraping.
-- `rpa2.py`: Script responsável pela análise dos dados.
-- `rpa3.py`: Script responsável pelo envio do relatório por e-mail.
+├── .env                # Arquivo com as credenciais de e-mail (não compartilhado)
+├── .env.example        # Exemplo de estrutura para o arquivo .env
+├── .gitignore          # Arquivo que define arquivos ignorados pelo Git
+├── README.md           # Documentação do projeto (este arquivo)
+├── requirements.txt    # Dependências do projeto
+├── rpa1.py             # Script para o web scraping
+├── rpa2.py             # Script para análise dos dados
+└── rpa3.py             # Script para envio do relatório por e-mail
+```
 
 ## Pré-requisitos
 
@@ -38,33 +39,55 @@ rpa3.py
   - `selenium`
   - `pandas`
   - `python-dotenv`
+  - `webdriver-manager`
 
 ## Instalação
 
-1. Crie um ambiente virtual Python:
-   - Windows: `python -m venv .venv`
-   - macOS/Linux: `python3 -m venv .venv`
-2. Ative o ambiente virtual:
-   - Windows: `.venv\Scripts\activate`
-   - macOS/Linux: `source .venv/bin/activate`
-3. Instale as dependências do projeto:
-   - `pip install -r requirements.txt`
-4. Crie o arquivo `.env` com suas credenciais de e-mail:
-   - Copie o conteúdo do `.env.example` e preencha com seus valores reais.
+**1. Crie um ambiente virtual Python:**
+   - **Windows**:
+     ```
+     python -m venv .venv
+     .venv\Scripts\activate
+     ```
+   - **macOS/Linux**:
+     ```
+     python3 -m venv .venv
+     source .venv/bin/activate
+     ```
+
+**2. Instale as dependências do projeto:**
+   - ``` pip install -r requirements.txt ```
+
+
+**3. Configure as credenciais de e-mail:**
+- Crie o arquivo `.env` a partir do `.env.example`:
+  ```
+  cp .env.example .env
+  ```
+- Preencha o `.env` com suas credenciais de e-mail.
 
 ## Uso
 
-1. Execute o script `rpa1.py` para realizar o web scraping:
-   - `python rpa1.py`
-2. Execute o script `rpa2.py` para processar os dados:
-   - `python rpa2.py`
-3. Execute o script `rpa3.py` para enviar as analises por email:
-   - `python rpa3.py`
+**1. Execute o script `rpa1.py` para realizar o web scraping:**
+  - ```python rpa1.py ```
+  - Gera o arquivo `quotes.csv` com as citações extraídas.
+
+**2. Execute o script `rpa2.py` para processar os dados:**
+  - ```python rpa2.py```
+  - Exibe a análise no console.
+  - Gera o relatório `analiseQuotesCsv.txt`.
+
+**3. Execute o script `rpa3.py` para enviar o relatório por e-mail:**
+  -```python rpa3.py```
+  - Envia o relatório gerado e o arquivo `quotes.csv` para os destinatários especificados.
 
 ## Considerações Finais
 
-- Organizei esse projeto tentando as melhores práticas de desenvolvimento, com uma estrutura de arquivos clara e boas práticas de segurança (como o uso de um arquivo `.env` para armazenar credenciais).
-- O código está dividido em funções, facilitando a manutenção e a adição de novas funcionalidades.
-- O envio de e-mail é realizado de forma automática, simplificando o processo de compartilhamento dos resultados.
+- Organizei este projeto seguindo as melhores práticas de desenvolvimento:
+- **Estrutura modular**: cada funcionalidade está em um script separado.
+- **Segurança**: o arquivo `.env` protege credenciais sensíveis.
+- **Organização**: o código está limpo e fácil de manter.
 
-Sinta-se à vontade para entrar em contato caso tenha alguma dúvida ou sugestão de melhoria para o projeto.
+- O envio de e-mails é automático, simplificando o compartilhamento de resultados.
+
+**Caso tenha dúvidas ou sugestões de melhoria, entre em contato.**
