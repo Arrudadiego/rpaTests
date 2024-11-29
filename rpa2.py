@@ -1,13 +1,8 @@
 import os
 import sys
 import pandas as pd
+from rpa1 import get_script_directory
 
-def get_script_directory():
-    if getattr(sys, 'frozen', False):
-        return os.path.dirname(sys.executable)
-    elif __file__:
-        return os.path.dirname(os.path.abspath(__file__))
-    return os.getcwd()
 
 def analyze_quotes(csv_file='quotes.csv'):
 
@@ -18,13 +13,17 @@ def analyze_quotes(csv_file='quotes.csv'):
     path = os.path.join(diretorio, csv_file)
     
     try:
+        if not os.path.exists(path):
+            print(f"Erro: Arquivo {path} não encontrado.")
+            return None, None
+        
         df = pd.read_csv(path, encoding='utf-8')
         
         #analise de citações
         total_quotes = len(df)
         print("Análise de Citações")
         print(f"Número total de citações: {total_quotes}")
-        
+
         #contagem do autor mais recorrente
         autor_counts = df['Author'].value_counts()
         recurring_autor =autor_counts.index[0]
@@ -33,8 +32,7 @@ def analyze_quotes(csv_file='quotes.csv'):
         print(f"Número de citações do autor: {autor_count}")
         
         #tirando as tags de uma string e separando em listas
-        df['Tags'] = df['Tags'].str.split(', ')
-        
+        df['Tags'] = df['Tags'].str.split(', ')       
         #separa as tags em linhas
         tags_series = df.explode('Tags')['Tags']
         tag_counts = tags_series.value_counts()
@@ -44,22 +42,24 @@ def analyze_quotes(csv_file='quotes.csv'):
         tag_count = tag_counts.iloc[0]
         print(f"\nTag mais utilizada: '{most_tag}'")
         print(f"Número de ocorrências: {tag_count}")
-        
-        #relatorio da analise
-        report_path = os.path.join(diretorio, 'analiseQuotesCsv.txt')
-        with open(report_path, 'w', encoding='utf-8') as f:
-            f.write("Relatório de Análise de Citações \n\n")
-            f.write(f"Total de citações: {total_quotes}\n")
-            f.write(f"Autor mais recorrente: {recurring_autor} (com {autor_count} citações)\n")
-            f.write(f"Tag mais utilizada: '{most_tag}' (com {tag_count} ocorrências)\n")
-        
-        print(f"\nRelatório salvo em: {report_path}")
-    
+
+        summary = f"""
+Relatório de Análise de Citações:
+
+- Total de citações: {total_quotes}
+- Autor mais recorrente: {recurring_autor} (com {autor_count} citações)
+- Tag mais utilizada: '{most_tag}' (com {tag_count} ocorrências)
+"""
+        return summary, path
+                
     except FileNotFoundError:
         print(f"Erro: Arquivo {path} não encontrado.")
         print("Certifique-se de que o arquivo 'quotes.csv' existe no mesmo diretório do script.")
     except Exception as e:
         print(f"Ocorreu um erro durante a análise: {e}")
+    except pd.errors.EmptyDataError:
+        print(f"Erro: Arquivo {path} está vazio ou corrompido.")
+        return None, None
 
 def main():
     analyze_quotes()

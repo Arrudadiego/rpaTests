@@ -7,7 +7,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  
 from selenium.webdriver.support import expected_conditions as EC 
 import csv 
-import time 
+import time
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 #fiz essa funcao para o arquivo csv ficar na mesma pasta em que o terminal estiver
 def get_script_directory():
@@ -22,15 +24,19 @@ def get_script_directory():
     #volta para o diretório atual
     return os.getcwd()
 
+#funcao para configurar o driver
 def setup_driver():
     options = webdriver.ChromeOptions()  
     options.add_argument('--headless')  
     options.add_argument('--lang=en-US') 
-    return webdriver.Chrome(options=options)
+    
+    #usa o webdriver para gereciar o driver do chrome
+    service = Service(ChromeDriverManager().install())
+    return webdriver.Chrome(service=service, options=options)
 
 def scrape_quotes(driver):
     #lista que ira armazenar os dados
-    list = [] 
+    lista = [] 
     
     #wait para carregar as citacoes
     citacoes = WebDriverWait(driver, 10).until(
@@ -49,15 +55,15 @@ def scrape_quotes(driver):
         tags = [tag.text for tag in tags_elements]  # Converte tags para lista
         
         #adiçao na lista
-        list.append({
+        lista.append({
             'Quote': texto,
             'Author': autor,
             'Tags': ', '.join(tags)
         })
     
-    return list
+    return lista
 
-def save_to_csv(list, filename='quotes.csv'):
+def save_to_csv(lista, filename='quotes.csv'):
 
     #pega o diretorio do script
     diretorio = get_script_directory()
@@ -66,14 +72,14 @@ def save_to_csv(list, filename='quotes.csv'):
     path = os.path.join(diretorio, filename)
     
     #define a ordem das colunas
-    keys = list[0].keys()
+    keys = lista[0].keys()
     
     #abre o arquivo csv
     with open(filename, 'w', newline='', encoding='utf-8-sig') as csvfile:
         #escritor csv
         writer = csv.DictWriter(csvfile, fieldnames=keys)       
         writer.writeheader()
-        writer.writerows(list)
+        writer.writerows(lista)
 
 def main():
     #driver do navegador
@@ -83,12 +89,15 @@ def main():
         #ida ao site
         driver.get('https://quotes.toscrape.com/js-delayed/')
         time.sleep(5)
-        list = scrape_quotes(driver)        
-        save_to_csv(list)
+        lista = scrape_quotes(driver)        
+        save_to_csv(lista)
         
         #print em caso de sucesso
-        print(f"Foram extraidas com sucesso {len(list)} citações")
-    
+        print(f"Foram extraidas com sucesso {len(lista)} citações")
+
+    except Exception as e:
+        print(f"Ocorreu um erro durante a execução: {e}")
+
     finally:
         #encerra o driver
         driver.quit()

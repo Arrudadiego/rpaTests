@@ -8,54 +8,11 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from dotenv import load_dotenv
+from rpa1 import get_script_directory
+from rpa2 import analyze_quotes
 
-def get_directory():
-    if getattr(sys, 'frozen', False):
-        return os.path.dirname(sys.executable)
-    elif __file__:
-        return os.path.dirname(os.path.abspath(__file__))
-    return os.getcwd()
 
-def analyze_quotes(csv_file='quotes.csv'):
-
-    diretorio = get_directory()
-    
-    path = os.path.join(diretorio, csv_file)
-    
-    try:
-        df = pd.read_csv(path, encoding='utf-8')
-        
-        total_quotes = len(df)
-        
-        autor_counts = df['Author'].value_counts()
-        recurring_autor = autor_counts.index[0]
-        autor_count = autor_counts.iloc[0]
-        
-        df['Tags'] = df['Tags'].str.split(', ')
-        
-        tags_series = df.explode('Tags')['Tags']
-        tag_counts = tags_series.value_counts()
-        
-        most_tag = tag_counts.index[0]
-        tag_count = tag_counts.iloc[0]
-        
-        #conteudo do relatorio
-        summary = f"""
-Relatório de Análise de Citações:
-
-- Total de citações: {total_quotes}
-- Autor mais recorrente: {recurring_autor} (com {autor_count} citações)
-- Tag mais utilizada: '{most_tag}' (com {tag_count} ocorrências)
-"""
-        return summary, path
-    
-    except FileNotFoundError:
-        print(f"Erro: Arquivo {path} não encontrado.")
-        return None, None
-    except Exception as e:
-        print(f"Ocorreu um erro durante a análise: {e}")
-        return None, None
-
+#funcao para enviar o relatorio por email
 def email_report(summary, csv_path):
     #load das variaveis de ambiente
     load_dotenv()
@@ -66,8 +23,7 @@ def email_report(summary, csv_path):
     
     #emails dos destinatários
     destinatarios = [
-        'paulo.andre@parvi.com.br', 
-        'thiago.jose@parvi.com.br'
+        'arrudadiego2000@hotmail.com'
     ]
     
     #configs do servidor SMTP do gmail
